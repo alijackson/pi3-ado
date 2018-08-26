@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,9 +27,7 @@ public class CrudProduto {
     
     public CrudProduto(){
         setSql("");
-        conn = null;
-        rst = null;
-        pst = null;
+        
         result = new StringBuilder();
 
     }
@@ -38,17 +37,17 @@ public class CrudProduto {
             
             conn = Conexao.getConnection();
 
-            setSql("INSERT INTO produto (NOME, DESCRICAO,"
-                    + "PRECO_COMPRA, PRECO_VENDA, QUANTIDADE,"
+            setSql("INSERT INTO PRODUTO (NOME, DESCRICAO, "
+                    + "PRECO_COMPRA, PRECO_VENDA, QUANTIDADE, "
                     + "DT_CADASTRO) VALUES "
-                    + "(? ,? ,? , ?, ?, NOW()");
+                    + "(? ,? ,? , ?, ?, NOW())");
             
             pst = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             
             pst.setString(1, prt.getNome());
             pst.setString(2, prt.getDescricao());
-            pst.setFloat(3, (Float)prt.getpCompra());
-            pst.setFloat(4, (Float)prt.getpVenda());
+            pst.setFloat(3, (Float) prt.getpCompra());
+            pst.setFloat(4, (Float) prt.getpVenda());
             pst.setInt(5, prt.getQuant());
 //            pst.setTimestamp(6, prt.getTime());
             
@@ -57,12 +56,14 @@ public class CrudProduto {
             rst = pst.getGeneratedKeys();
             
             if(rst.first()){
-                prt.setId(rst.getInt("ID"));
+                prt.setId(rst.getInt(1));
             }
             insertCateg(prt, conn);
         }
         catch(Exception e){
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao inserir os dados na fonte de dados:\n"
+                    + e, "Erro", JOptionPane.ERROR_MESSAGE);
         }
         finally {
             
@@ -101,6 +102,8 @@ public class CrudProduto {
         }
         catch(Exception e){
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao inserir os dados na fonte de dados:\n"
+                    + e, "Erro", JOptionPane.ERROR_MESSAGE);
         }
         
     }

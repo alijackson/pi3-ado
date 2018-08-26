@@ -44,7 +44,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txtDesc = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtPreVenda = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -59,7 +58,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         bCadastrar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel9 = new javax.swing.JLabel();
-        txtData = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar Produto");
@@ -96,10 +94,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
 
         txtDesc.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         txtDesc.setForeground(new java.awt.Color(51, 51, 51));
-
-        jLabel2.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Data de cadastro*");
 
         jLabel3.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -192,11 +186,7 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                             .addComponent(jLabel3)
                                             .addGap(95, 95, 95)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel2))
-                                    .addGap(22, 22, 22))
+                                    .addGap(132, 132, 132))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel6)
@@ -241,17 +231,13 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
                         .addGap(1, 1, 1)
                         .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel4))
-                            .addComponent(jLabel2))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
                         .addGap(1, 1, 1)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtData)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtPreVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtQtd, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtPreVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtQtd, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -279,23 +265,31 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_txtQtdActionPerformed
 
     private void bAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddActionPerformed
+
         Produto prod = new Produto();
-        
-        prod.setNome(txtNome.getText());
-        prod.setDescricao(txtDesc.getText());
-        prod.setCategoria(String.valueOf(cBox.getSelectedObjects()));
-        prod.setQuant(Integer.getInteger(txtQtd.getText()));
-        prod.setpCompra(Float.parseFloat(txtPreco.getText()));
-        prod.setpVenda(Float.parseFloat(txtPreVenda.getText()));
-        
-        CrudProduto novoProd = new CrudProduto();
         try {
+            
+            prod.setNome(txtNome.getText());
+            prod.setDescricao(txtDesc.getText());
+            prod.setCategoria(String.valueOf(cBox.getSelectedItem()));
+            prod.setQuant(Integer.parseInt(txtQtd.getText()));
+            prod.setpCompra(Float.parseFloat(txtPreco.getText()));
+            prod.setpVenda(Float.parseFloat(txtPreVenda.getText()));
+            
+            CrudProduto novoProd = new CrudProduto();
+        
             novoProd.insertProd(prod);
+            
+            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!", 
+                    "Cadastrado", JOptionPane.INFORMATION_MESSAGE);
+            
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar o produto",
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar o produto\n"+e,
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
-
+        
+        
     }//GEN-LAST:event_bAddActionPerformed
 
     private void bCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCadastrarActionPerformed
@@ -346,7 +340,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
     private javax.swing.JButton bCadastrar;
     public static javax.swing.JComboBox<String> cBox;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -357,7 +350,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField txtData;
     public static javax.swing.JTextField txtDesc;
     public static javax.swing.JTextField txtNome;
     public static javax.swing.JTextField txtPreVenda;

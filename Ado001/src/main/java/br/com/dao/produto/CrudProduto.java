@@ -149,11 +149,11 @@ public class CrudProduto {
                 prt.setQuant(rst.getInt("QUANTIDADE"));
                 prt.setCategoria(rst.getString("c.NOME"));
                 
-                list.add(prt);
+                setAddList(prt);
                 
             }
             
-            return list;
+            return getList();
         
     }
     
@@ -166,11 +166,14 @@ public class CrudProduto {
     }    
     
     public ArrayList<Produto> getList() {
-        return list;
+        return this.list;
     }
 
     public void setList(ArrayList<Produto> list) {
         this.list = list;
+    }
+    public void setAddList(Produto prt){
+        this.list.add(prt);
     }
     
     

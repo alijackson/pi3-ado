@@ -5,6 +5,11 @@
  */
 package br.com.view.TelaConsulta;
 
+import br.com.dao.produto.CrudProduto;
+import br.com.produto.Produto;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -15,8 +20,53 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
      * Creates new form TelaPesquisarProduto
      */
     public TelaPesquisarProduto() {
+        
         initComponents();
-    }
+        
+        ArrayList<Produto> listProd = new ArrayList<Produto>();
+        
+        CrudProduto printAll = new CrudProduto();
+        
+        Produto prt = new Produto();
+        
+        Object [] linha = new Object[7];
+        
+        try {
+            listProd = printAll.printAllProduto();
+            if(listProd != null){
+                
+                DefaultTableModel model
+                    = (DefaultTableModel) tbProduto.getModel();
+            
+                model.setRowCount(0);
+                
+                if (listProd != null && listProd.size() > 0){
+                    
+                    for(int i = 0; i < listProd.size(); i++){
+                        
+                        prt = listProd.get(i);
+                        
+                        if(prt != null){
+                            
+                            linha [0] = prt.getId();
+                            linha [1] = prt.getNome();
+                            linha [2] = prt.getDescricao();
+                            linha [3] = prt.getpCompra();
+                            linha [4] = prt.getpVenda();
+                            linha [5] = prt.getQuant();
+                            linha [6] = prt.getCategoria();
+                            
+                            model.addRow(linha);
+                        }
+                    }
+                }
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+            
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,14 +99,14 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nome", "Gênero", "Descrição", "Data Fab", "Preço", "Fornecedor", "Qtd"
+                "ID", "Nome", "Descrição", "Valor_Compra", "Valor_Venda", "Quatidade", "Categoria"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -75,12 +125,12 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbProduto);
         if (tbProduto.getColumnModel().getColumnCount() > 0) {
-            tbProduto.getColumnModel().getColumn(0).setResizable(false);
+            tbProduto.getColumnModel().getColumn(0).setMinWidth(1);
+            tbProduto.getColumnModel().getColumn(0).setMaxWidth(1);
             tbProduto.getColumnModel().getColumn(1).setResizable(false);
             tbProduto.getColumnModel().getColumn(2).setResizable(false);
             tbProduto.getColumnModel().getColumn(4).setResizable(false);
             tbProduto.getColumnModel().getColumn(5).setResizable(false);
-            tbProduto.getColumnModel().getColumn(7).setResizable(false);
         }
 
         brnExcluir.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -110,7 +160,7 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(brnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                .addComponent(brnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, Short.MAX_VALUE)
                 .addGap(4, 4, 4))
         );
 
@@ -196,7 +246,7 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void start() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

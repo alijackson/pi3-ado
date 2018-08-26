@@ -283,6 +283,7 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!", 
                     "Cadastrado", JOptionPane.INFORMATION_MESSAGE);
             
+            limparTela();
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar o produto\n"+e,
@@ -292,6 +293,17 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         
     }//GEN-LAST:event_bAddActionPerformed
 
+    private void limparTela(){
+        
+            txtNome.setText("");
+            txtDesc.setText("");
+            cBox.setSelectedIndex(0);
+            txtQtd.setText("");
+            txtPreco.setText("");
+            txtPreVenda.setText("");
+        
+    }
+    
     private void bCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCadastrarActionPerformed
         TelaPrincipal viewPrincipal = new TelaPrincipal();
         

@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,7 +24,8 @@ public class CrudProduto {
     private ResultSet rst;
     private PreparedStatement pst;
     private String sql;
-    StringBuilder result;
+    private StringBuilder result;
+    private ArrayList<Produto> list;
     
     public CrudProduto(){
         setSql("");
@@ -31,7 +33,7 @@ public class CrudProduto {
         result = new StringBuilder();
 
     }
-    
+
     public void insertProd(Produto prt) throws SQLException{
         try {
             
@@ -74,6 +76,12 @@ public class CrudProduto {
         }
     }
     
+    /**
+     * Vincular categoria ao pruduto.
+     * @param prt
+     * @param conn
+     * @throws SQLException 
+     */
     private void insertCateg (Produto prt, Connection conn)
     throws SQLException
     {
@@ -105,8 +113,50 @@ public class CrudProduto {
             JOptionPane.showMessageDialog(null, "Erro ao inserir os dados na fonte de dados:\n"
                     + e, "Erro", JOptionPane.ERROR_MESSAGE);
         }
+        Conexao.closeConnection(conn);
+    }
+    /**
+     * Coleta informações do banco de dados e guarda em um array list
+     * @return
+     * @throws SQLException 
+     */
+    public ArrayList<Produto> printAllProduto() 
+            throws SQLException{
+        
+        
+        
+        Produto prt = new Produto();
+        
+        conn = Conexao.getConnection();
+
+            setSql("SELECT * FROM PRODUTO p "
+                    + "INNER JOIN CATEGORIA c ON "
+                    + "p.ID = c.ID ORDER BY p.NOME");
+            
+            pst = conn.prepareStatement(sql);
+            
+            rst = pst.executeQuery();
+            
+            while(rst.next()){
+                if(list == null)
+                    list = new ArrayList<>();
+                
+                prt.setId(rst.getInt("p.ID"));
+                prt.setNome(rst.getString("p.NOME"));
+                prt.setDescricao(rst.getString("p.DESCRICAO"));
+                prt.setpCompra(rst.getFloat("p.PRECO_COMPRA"));
+                prt.setpVenda(rst.getFloat("p.PRECO_VENDA"));
+                prt.setQuant(rst.getInt("QUANTIDADE"));
+                prt.setCategoria(rst.getString("c.NOME"));
+                
+                list.add(prt);
+                
+            }
+            
+            return list;
         
     }
+    
     public String getSql() {
         return sql;
     }
@@ -114,5 +164,14 @@ public class CrudProduto {
     public void setSql(String sql) {
         this.sql = sql;
     }    
+    
+    public ArrayList<Produto> getList() {
+        return list;
+    }
+
+    public void setList(ArrayList<Produto> list) {
+        this.list = list;
+    }
+    
     
 }

@@ -3,19 +3,63 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.view.TelaConsulta;
+package br.com.view.tela.consulta;
 
+import br.com.editar.TelaEditarProduto;
+import br.com.model.dao.ProdutoDAO;
+import br.com.model.produto.Produto;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Kujikeo
  */
 public class TelaPesquisarProduto extends javax.swing.JFrame {
+
+    private ProdutoDAO dao = new ProdutoDAO();
+    private int id;
+    private Produto produto;
+    private SimpleDateFormat dataSaida = new SimpleDateFormat("dd/MM/yyyy");
+    private SimpleDateFormat dataBanco = new SimpleDateFormat("yyyy-MM-dd");
+
     /**
      * Creates new form TelaPesquisarProduto
      */
     public TelaPesquisarProduto() {
         initComponents();
+        readJtable();
+    }
+
+    // retornar os produtos cadastrados
+    public void readJtable() {
+        DefaultTableModel modelo = (DefaultTableModel) tbProduto.getModel();
+        ProdutoDAO dao = new ProdutoDAO();
+        modelo.setRowCount(0);
+
+        for (Produto p : dao.read()) {
+
+            // função que alterar o formato da data de yyyy/MM/dd para dd/MM/yyyy
+            String data = AlterarFormatoData(dataSaida, dataBanco, p);
+
+            modelo.addRow(new Object[]{
+                p.getId(),
+                p.getNome(),
+                p.getGenero(),
+                p.getDescricao(),
+                data,
+                p.getPreco(),
+                p.getFornecedor(),
+                p.getQtd()
+
+            });
+
+        }
+
     }
 
     /**
@@ -179,6 +223,17 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
 
     private void tbProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdutoMouseClicked
 
+        if (evt.getClickCount() == 2) {
+
+            //selecionar linha
+            int row = tbProduto.getSelectedRow();
+            //obter id do produto
+            id = (int) tbProduto.getValueAt(row, 0);
+
+            TelaEditarProduto editP = new TelaEditarProduto(id);
+            editP.setVisible(true);
+
+        }
 
     }//GEN-LAST:event_tbProdutoMouseClicked
 
@@ -189,9 +244,44 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
 
     private void brnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brnExcluirActionPerformed
 
+        // obtem a linha selecionada na tabela
+        final int row = tbProduto.getSelectedRow();
+
+        // obtem o nome do produto para exibir uma mensagem
+        // de confirmação da exclusão
+        String nome = (String) tbProduto.getValueAt(row, 1);
+
+        // obtem o id do produto para exclusão
+        int id1 = (int) tbProduto.getValueAt(row, 0);
+
+        int resposta = JOptionPane.showConfirmDialog(null, "Deseja excluir " + nome + " ? ",
+                "Selecione uma opção", JOptionPane.YES_NO_OPTION);
+
+        if (resposta == JOptionPane.YES_OPTION) {
+            // excluir o produto da lista
+            dao.excluir(id1);
+            deletarP(row);
+        }
 
     }//GEN-LAST:event_brnExcluirActionPerformed
 
+    void deletarP(int linha) {
+        DefaultTableModel tb = (DefaultTableModel) tbProduto.getModel();
+        tb.removeRow(linha);
+    }
+
+    private String AlterarFormatoData(SimpleDateFormat dataSaida, SimpleDateFormat dataBanco, Produto p) {
+
+        String data = "";
+
+        try {
+            data = dataSaida.format(dataBanco.parse(p.getData()));
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaPesquisarProduto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return data;
+    }
 
     /**
      * @param args the command line arguments

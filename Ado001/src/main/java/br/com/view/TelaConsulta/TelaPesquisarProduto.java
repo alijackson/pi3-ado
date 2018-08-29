@@ -7,66 +7,49 @@ package br.com.view.TelaConsulta;
 
 import br.com.dao.produto.CrudProduto;
 import br.com.produto.Produto;
-import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
 
 /**
  *
  * @author Kujikeo
  */
 public class TelaPesquisarProduto extends javax.swing.JFrame {
+
+    private CrudProduto dao = new CrudProduto();
+
     /**
      * Creates new form TelaPesquisarProduto
      */
     public TelaPesquisarProduto() {
-        
+
         initComponents();
-        
-        ArrayList<Produto> listProd = new ArrayList<Produto>();
-        
-        CrudProduto printAll = new CrudProduto();
-        
-        Produto prt = new Produto();
-        
-        Object [] linha = new Object[7];
-        
-        try {
-            listProd = printAll.printAllProduto();
-            if(listProd != null){
-                
-                DefaultTableModel model
-                    = (DefaultTableModel) tbProduto.getModel();
-            
-                model.setRowCount(0);
-                
-                if (listProd != null && listProd.size() > 0){
-                    
-                    for(int i = 0; i < listProd.size(); i++){
-                        
-                        prt = listProd.get(i);
-                        
-                        if(prt != null){
-                            
-                            linha [0] = prt.getId();
-                            linha [1] = prt.getNome();
-                            linha [2] = prt.getDescricao();
-                            linha [3] = prt.getpCompra();
-                            linha [4] = prt.getpVenda();
-                            linha [5] = prt.getQuant();
-                            linha [6] = prt.getCategoria();
-                            
-                            model.addRow(linha);
-                        }
-                    }
-                }
-            }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
+        readJtable();
+
+    }
+
+    // retornar os produtos cadastrados
+    public void readJtable() {
+        DefaultTableModel modelo = (DefaultTableModel) tbProduto.getModel();
+        CrudProduto dao = new CrudProduto();
+        modelo.setRowCount(0);
+
+        for (Produto p : dao.read()) {
+
+            modelo.addRow(new Object[]{
+                p.getId(),
+                p.getNome(),
+                p.getDescricao(),
+                p.getpCompra(),
+                p.getpVenda(),
+                p.getQuant(),
+                p.getCategoria()
+
+            });
+
         }
-            
-        }
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -160,7 +143,7 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(brnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, Short.MAX_VALUE)
+                .addComponent(brnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
                 .addGap(4, 4, 4))
         );
 
@@ -239,9 +222,32 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
 
     private void brnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brnExcluirActionPerformed
 
+        // obtem a linha selecionada na tabela
+        final int row = tbProduto.getSelectedRow();
+
+        // obtem o nome do produto para exibir uma mensagem
+        // de confirmação da exclusão
+        String nome = (String) tbProduto.getValueAt(row, 1);
+
+        // obtem o id do produto para exclusão
+        int id1 = (int) tbProduto.getValueAt(row, 0);
+
+        int resposta = JOptionPane.showConfirmDialog(null, "Deseja excluir " + nome + " ? ",
+                "Selecione uma opção", JOptionPane.YES_NO_OPTION);
+
+        if (resposta == JOptionPane.YES_OPTION) {
+            // excluir o produto da lista
+            dao.excluir(id1);
+            deletarP(row);
+        }
+
 
     }//GEN-LAST:event_brnExcluirActionPerformed
 
+    void deletarP(int linha) {
+        DefaultTableModel tb = (DefaultTableModel) tbProduto.getModel();
+        tb.removeRow(linha);
+    }
 
     /**
      * @param args the command line arguments

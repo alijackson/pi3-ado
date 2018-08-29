@@ -209,14 +209,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void bCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCadastrarActionPerformed
         TelaCadastroProduto cadastro = new TelaCadastroProduto();
-        cadastro.start();
-        this.dispose();
+        cadastro.setVisible(true);
     }//GEN-LAST:event_bCadastrarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         TelaPesquisarProduto cons = new TelaPesquisarProduto();
-        cons.start();
-        this.dispose();
+        cons.setVisible(true);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 

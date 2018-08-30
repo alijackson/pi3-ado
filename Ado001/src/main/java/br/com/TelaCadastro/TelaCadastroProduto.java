@@ -9,7 +9,6 @@ import br.com.dao.produto.CrudProduto;
 import br.com.view.TelaPrincipal.TelaPrincipal;
 import br.com.dao.produto.ListCategoria;
 import br.com.produto.Produto;
-import java.util.Calendar;
 import javax.swing.JOptionPane;
 /**
  *
@@ -135,7 +134,7 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         cBox.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         cBox.setForeground(new java.awt.Color(51, 51, 51));
         ListCategoria cbPrint = new ListCategoria();
-        cBox.setModel(new javax.swing.DefaultComboBoxModel<>(cbPrint.listCat()));
+        cBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Ação", "Aventura", "Terror", "Ficção Cientifica", "Estrategia", "RPG" }));
 
         bAdd.setText("Adicionar");
         bAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -242,7 +241,7 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

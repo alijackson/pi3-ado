@@ -214,6 +214,10 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPesqActionPerformed
 
     private void tbProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdutoMouseClicked
+        
+        if (evt.getClickCount() != 2){
+            return;
+        }
         try {
 
             final int row = tbProduto.getSelectedRow();
@@ -221,13 +225,13 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
             if (row >= 0) {
                 
                 Produto prt = new Produto();
-                prt.setId((int)tbProduto.getValueAt(row, 0));
-                prt.setNome(tbProduto.getValueAt(row, 1).toString());
-                prt.setDescricao(tbProduto.getValueAt(row, 2).toString());
-                prt.setpCompra((float) tbProduto.getValueAt(row, 3));
-                prt.setpVenda((float) tbProduto.getValueAt(row, 4));
-                prt.setQuant((int) tbProduto.getValueAt(row, 5));
-                prt.setCategoria(tbProduto.getValueAt(row, 6).toString());
+                prt.setId(Integer.valueOf(tbProduto.getValueAt(row, 0).toString()));
+                prt.setNome(String.valueOf(tbProduto.getValueAt(row, 1)));
+                prt.setDescricao(String.valueOf(tbProduto.getValueAt(row, 2)));
+                prt.setpCompra(Float.valueOf(tbProduto.getValueAt(row, 3).toString()));
+                prt.setpVenda(Float.valueOf(tbProduto.getValueAt(row, 4).toString()));
+                prt.setQuant(Integer.parseInt(tbProduto.getValueAt(row, 5).toString()));
+                prt.setCategoria(String.valueOf(tbProduto.getValueAt(row, 6)));
                 
                 editar.dispose();
                 editar = new TelaEditarProduto();

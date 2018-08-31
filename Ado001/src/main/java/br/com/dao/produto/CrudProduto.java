@@ -52,7 +52,7 @@ public class CrudProduto {
             pst.setFloat(3, (Float) prt.getpCompra());
             pst.setFloat(4, (Float) prt.getpVenda());
             pst.setInt(5, prt.getQuant());
-//            pst.setTimestamp(6, prt.getTime());
+            
 
             pst.execute();
 
@@ -156,59 +156,109 @@ public class CrudProduto {
 
     }
 
-    public List<Produto> read() {
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
+public List<Produto> read() {
+Connection con = Conexao.getConnection();
+PreparedStatement stmt = null;
+ResultSet rs = null;
 
-        List<Produto> produtos = new ArrayList<>();
+List<Produto> produtos = new ArrayList<>();
+try {
+  stmt = con.prepareStatement("SELECT * FROM PRODUTO");
+  rs = stmt.executeQuery();
+
+  while (rs.next()) {
+      Produto p = new Produto();
+
+      p.setId(rs.getInt("ID"));
+      p.setNome(rs.getString("NOME"));
+      p.setDescricao(rs.getString("DESCRICAO"));
+      p.setpCompra(rs.getFloat("PRECO_COMPRA"));
+      p.setpVenda(rs.getFloat("PRECO_VENDA"));
+      p.setQuant(rs.getInt("QUANTIDADE"));
+      p.setTime(rs.getTimestamp("DT_CADASTRO"));
+      produtos.add(p);
+  }
+
+} catch (SQLException ex) {
+  JOptionPane.showMessageDialog(null, "erro ao salvar" + ex);
+} finally {
+  Conexao.closeConnection(con, stmt, rs);
+
+}
+return produtos;
+
+}
+
+public void excluir(int id) {
+
+Connection con = Conexao.getConnection();
+PreparedStatement stmt = null;
+
+try {
+
+  stmt = con.prepareStatement("DELETE FROM PRODUTO  WHERE ID = ?");
+  stmt.setInt(1, id);
+
+  stmt.executeUpdate();
+
+  JOptionPane.showMessageDialog(null, "Excluído  com sucesso");
+
+} catch (SQLException ex) {
+  JOptionPane.showMessageDialog(null, "erro ao atualizar" + ex);
+} finally {
+  Conexao.closeConnection(con, stmt);
+}
+}
+
+    public void updateProd(Produto prt) throws SQLException {
         try {
-            stmt = con.prepareStatement("SELECT * FROM PRODUTO");
-            rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                Produto p = new Produto();
+            conn = Conexao.getConnection();
 
-                p.setId(rs.getInt("ID"));
-                p.setNome(rs.getString("NOME"));
-                p.setDescricao(rs.getString("DESCRICAO"));
-                p.setpCompra(rs.getFloat("PRECO_COMPRA"));
-                p.setpVenda(rs.getFloat("PRECO_VENDA"));
-                p.setQuant(rs.getInt("QUANTIDADE"));
-                p.setTime(rs.getTimestamp("DT_CADASTRO"));
-                produtos.add(p);
-            }
+            setSql("UPDATE PRODUTO SET NOME=?, DESCRICAO=?, "
+                    + "PRECO_COMPRA=?, PRECO_VENDA=?, QUANTIDADE=? "
+                    + "WHERE (ID=?) ");
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro ao salvar" + ex);
+            pst = conn.prepareStatement(sql);
+
+            pst.setString(1, prt.getNome());
+            pst.setString(2, prt.getDescricao());
+            pst.setDouble(3, prt.getpCompra());
+            pst.setDouble(4, prt.getpVenda());
+            pst.setInt(5, prt.getQuant());
+            pst.setInt(6, prt.getId());
+
+            pst.execute();
+
+            updateCateg(prt, conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar os dados na fonte de dados:\n"
+                    + e, "Erro", JOptionPane.ERROR_MESSAGE);
         } finally {
-            Conexao.closeConnection(con, stmt, rs);
-
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
         }
-        return produtos;
-
     }
 
-    public void excluir(int id) {
-
-        Connection con = Conexao.getConnection();
-        PreparedStatement stmt = null;
-
+    public void updateCateg(Produto prt, Connection conn) throws SQLException{
         try {
 
-            stmt = con.prepareStatement("DELETE FROM PRODUTO  WHERE ID = ?");
-            stmt.setInt(1, id);
+            setSql("UPDATE PRODUTO_CATEGORIA SET ID_CATEGORIA=(SELECT ID FROM CATEGORIA WHERE (NOME=?)) WHERE (ID_PRODUTO=?) ");
 
-            stmt.executeUpdate();
+            pst = conn.prepareStatement(sql);
 
-            JOptionPane.showMessageDialog(null, "Excluído  com sucesso");
+            pst.setString(1, prt.getCategoria());
+            pst.setInt(2, prt.getId());
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro ao atualizar" + ex);
-        } finally {
-            Conexao.closeConnection(con, stmt);
+            pst.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar os dados na fonte de dados:\n"
+                    + e, "Erro", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     public String getSql() {

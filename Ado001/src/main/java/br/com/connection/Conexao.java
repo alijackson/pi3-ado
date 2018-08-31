@@ -18,9 +18,9 @@ import java.util.logging.Logger;
  * @author Kujikeo
  */
 public class Conexao {
-    
+
     private static final String DRIVER = "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://186.202.152.175:3306/produtobd";
+    private static final String URL = "jdbc:mysql://produtobd.mysql.dbaas.com.br:3306/produtobd";
     private static final String USER = "produtobd";
     private static final String PASS = "Grup0F1v3";
 

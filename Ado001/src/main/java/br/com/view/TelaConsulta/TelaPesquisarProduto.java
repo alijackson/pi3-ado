@@ -5,6 +5,7 @@
  */
 package br.com.view.TelaConsulta;
 
+import br.com.TelaEditar.TelaEditarProduto;
 import br.com.dao.produto.CrudProduto;
 import br.com.produto.Produto;
 import javax.swing.JOptionPane;
@@ -21,6 +22,8 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
     /**
      * Creates new form TelaPesquisarProduto
      */
+    TelaEditarProduto editar = new TelaEditarProduto();
+    
     public TelaPesquisarProduto() {
 
         initComponents();
@@ -211,8 +214,35 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPesqActionPerformed
 
     private void tbProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdutoMouseClicked
+        try {
 
+            final int row = tbProduto.getSelectedRow();
 
+            if (row >= 0) {
+                
+                Produto prt = new Produto();
+                prt.setId((int)tbProduto.getValueAt(row, 0));
+                prt.setNome(tbProduto.getValueAt(row, 1).toString());
+                prt.setDescricao(tbProduto.getValueAt(row, 2).toString());
+                prt.setpCompra((float) tbProduto.getValueAt(row, 3));
+                prt.setpVenda((float) tbProduto.getValueAt(row, 4));
+                prt.setQuant((int) tbProduto.getValueAt(row, 5));
+                prt.setCategoria(tbProduto.getValueAt(row, 6).toString());
+                
+                editar.dispose();
+                editar = new TelaEditarProduto();
+                editar.setProduto(prt);
+                editar.setTitle(prt.getNome());
+                editar.setVisible(true);
+                editar.setLocationRelativeTo(null);
+                editar.toFront();
+                
+                //buscar novamente os dados no banco
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
     }//GEN-LAST:event_tbProdutoMouseClicked
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed

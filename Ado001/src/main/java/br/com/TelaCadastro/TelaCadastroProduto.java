@@ -20,13 +20,13 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
      * Creates new form TelaCadastroProduto
      */
     public TelaCadastroProduto() {
-        
+
         initComponents();
 //        Calendar cal = Calendar.getInstance();
-//        
-//        txtData.setText(String.valueOf(cal.));
-        
-        
+//
+//        txtData.setText(  String.valueOf(cal.));
+
+
     }
 
     /**
@@ -134,7 +134,8 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         cBox.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         cBox.setForeground(new java.awt.Color(51, 51, 51));
         ListCategoria cbPrint = new ListCategoria();
-        cBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Ação", "Aventura", "Terror", "Ficção Cientifica", "Estrategia", "RPG" }));
+        cBox.setModel(new javax.swing.DefaultComboBoxModel<>(cbPrint.listCat()));
+        cBox.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         bAdd.setText("Adicionar");
         bAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -267,57 +268,57 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
 
         Produto prod = new Produto();
         try {
-            
+
             prod.setNome(txtNome.getText());
             prod.setDescricao(txtDesc.getText());
             prod.setCategoria(String.valueOf(cBox.getSelectedItem()));
             prod.setQuant(Integer.parseInt(txtQtd.getText()));
             prod.setpCompra(Float.parseFloat(txtPreco.getText()));
             prod.setpVenda(Float.parseFloat(txtPreVenda.getText()));
-            
+
             CrudProduto novoProd = new CrudProduto();
-        
+
             novoProd.insertProd(prod);
-            
-            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!", 
+
+            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!",
                     "Cadastrado", JOptionPane.INFORMATION_MESSAGE);
-            
+
             limparTela();
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar o produto\n"+e,
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar o produto\n" + e,
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
-        
-        
+
+
     }//GEN-LAST:event_bAddActionPerformed
 
-    private void limparTela(){
-        
-            txtNome.setText("");
-            txtDesc.setText("");
-            cBox.setSelectedIndex(0);
-            txtQtd.setText("");
-            txtPreco.setText("");
-            txtPreVenda.setText("");
-        
+    private void limparTela() {
+
+        txtNome.setText("");
+        txtDesc.setText("");
+        cBox.setSelectedIndex(0);
+        txtQtd.setText("");
+        txtPreco.setText("");
+        txtPreVenda.setText("");
+
     }
-    
+
     private void bCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCadastrarActionPerformed
         TelaPrincipal viewPrincipal = new TelaPrincipal();
-        
+
         this.dispose();
     }//GEN-LAST:event_bCadastrarActionPerformed
-    
+
 
     /**
      * @param args the command line arguments
      */
-    public void start(){
+    public void start() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

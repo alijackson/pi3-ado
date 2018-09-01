@@ -8,13 +8,13 @@
     <packaging>jar</packaging>
     
     <dependencies>
-    <dependency>
-        <!-- Importanto drive do mysql -->
-        <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
-        <version>5.1.47</version>
+        <dependency>
+            <!-- Importanto drive do mysql -->
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.47</version>
     
-    </dependency> 
+        </dependency> 
     </dependencies>
     
     <properties>

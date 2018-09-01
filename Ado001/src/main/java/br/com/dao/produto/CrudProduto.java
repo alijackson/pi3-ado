@@ -52,7 +52,6 @@ public class CrudProduto {
             pst.setFloat(3, (Float) prt.getpCompra());
             pst.setFloat(4, (Float) prt.getpVenda());
             pst.setInt(5, prt.getQuant());
-            
 
             pst.execute();
 
@@ -120,6 +119,7 @@ public class CrudProduto {
      * @return
      * @throws SQLException
      */
+    /*
     public ArrayList<Produto> printAllProduto()
             throws SQLException {
 
@@ -128,7 +128,7 @@ public class CrudProduto {
         conn = Conexao.getConnection();
 
         setSql("SELECT * FROM PRODUTO p "
-                + "INNER JOIN CATEGORIA c ON "
+                + "INNER JOIN PRODUTO_CATEGORIA c ON "
                 + "p.ID = c.ID ORDER BY p.NOME");
 
         pst = conn.prepareStatement(sql);
@@ -147,68 +147,110 @@ public class CrudProduto {
             prt.setpVenda(rst.getFloat("p.PRECO_VENDA"));
             prt.setQuant(rst.getInt("QUANTIDADE"));
             prt.setCategoria(rst.getString("c.NOME"));
-
+            
             setAddList(prt);
 
         }
 
         return getList();
 
+    }*/
+    public List<Produto> read() {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        List<Produto> produtos = new ArrayList<>();
+        try {
+            stmt = con.prepareStatement("SELECT p.*, c.NOME FROM PRODUTO p "
+                    + "INNER JOIN PRODUTO_CATEGORIA pc ON p.ID = pc.ID_PRODUTO "
+                    + "INNER JOIN CATEGORIA c ON pc.ID_CATEGORIA = c.ID");
+            rs = stmt.executeQuery();
+//            rs.first();
+            while (rs.next()) {
+                Produto p = new Produto();
+
+                p.setId(rs.getInt("p.ID"));
+                p.setNome(rs.getString("p.NOME"));
+                p.setDescricao(rs.getString("p.DESCRICAO"));
+                p.setpCompra(rs.getFloat("p.PRECO_COMPRA"));
+                p.setpVenda(rs.getFloat("p.PRECO_VENDA"));
+                p.setQuant(rs.getInt("p.QUANTIDADE"));
+                p.setTime(rs.getTimestamp("p.DT_CADASTRO"));
+                p.setCategoria(rs.getString("c.NOME"));
+                produtos.add(p);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+//            JOptionPane.showMessageDialog(null, "erro ao salvar" + ex);
+        } finally {
+            Conexao.closeConnection(con, stmt, rs);
+
+        }
+        return produtos;
+
     }
 
-public List<Produto> read() {
-Connection con = Conexao.getConnection();
-PreparedStatement stmt = null;
-ResultSet rs = null;
+    public Produto readOne(int produto) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Produto p = new Produto();
 
-List<Produto> produtos = new ArrayList<>();
-try {
-  stmt = con.prepareStatement("SELECT * FROM PRODUTO");
-  rs = stmt.executeQuery();
+        try {
+            stmt = con.prepareStatement("SELECT p.*, c.NOME FROM PRODUTO p "
+                    + "INNER JOIN PRODUTO_CATEGORIA pc ON p.ID = pc.ID_PRODUTO "
+                    + "INNER JOIN CATEGORIA c ON pc.ID_CATEGORIA = c.ID "
+                    + "WHERE p.ID = ?");
+            stmt.setInt(1, produto);
 
-  while (rs.next()) {
-      Produto p = new Produto();
+            rs = stmt.executeQuery();
+            rs.next();
 
-      p.setId(rs.getInt("ID"));
-      p.setNome(rs.getString("NOME"));
-      p.setDescricao(rs.getString("DESCRICAO"));
-      p.setpCompra(rs.getFloat("PRECO_COMPRA"));
-      p.setpVenda(rs.getFloat("PRECO_VENDA"));
-      p.setQuant(rs.getInt("QUANTIDADE"));
-      p.setTime(rs.getTimestamp("DT_CADASTRO"));
-      produtos.add(p);
-  }
+            p.setId(rs.getInt("p.ID"));
+            p.setNome(rs.getString("p.NOME"));
+            p.setDescricao(rs.getString("p.DESCRICAO"));
+            p.setpCompra(rs.getFloat("p.PRECO_COMPRA"));
+            p.setpVenda(rs.getFloat("p.PRECO_VENDA"));
+            p.setQuant(rs.getInt("p.QUANTIDADE"));
+            p.setTime(rs.getTimestamp("p.DT_CADASTRO"));
+            p.setCategoria(rs.getString("c.NOME"));
 
-} catch (SQLException ex) {
-  JOptionPane.showMessageDialog(null, "erro ao salvar" + ex);
-} finally {
-  Conexao.closeConnection(con, stmt, rs);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+//            JOptionPane.showMessageDialog(null, "erro ao salvar" + ex);
+        } finally {
+            Conexao.closeConnection(con, stmt, rs);
 
-}
-return produtos;
+        }
+        return p;
+    }
 
-}
+    public void excluir(int id) {
 
-public void excluir(int id) {
+        Connection con = Conexao.getConnection();
+        PreparedStatement stmt = null;
+        PreparedStatement stmt2 = null;
 
-Connection con = Conexao.getConnection();
-PreparedStatement stmt = null;
+        try {
 
-try {
+            stmt = con.prepareStatement("DELETE FROM PRODUTO_CATEGORIA  WHERE ID_PRODUTO = ?");
+            stmt.setInt(1, id);
+            stmt2 = con.prepareStatement("DELETE FROM PRODUTO  WHERE ID = ?");
+            stmt2.setInt(1, id);
 
-  stmt = con.prepareStatement("DELETE FROM PRODUTO  WHERE ID = ?");
-  stmt.setInt(1, id);
+            stmt.executeUpdate();
+            stmt2.executeUpdate();
 
-  stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Excluído  com sucesso");
 
-  JOptionPane.showMessageDialog(null, "Excluído  com sucesso");
-
-} catch (SQLException ex) {
-  JOptionPane.showMessageDialog(null, "erro ao atualizar" + ex);
-} finally {
-  Conexao.closeConnection(con, stmt);
-}
-}
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "erro ao atualizar" + ex);
+        } finally {
+            Conexao.closeConnection(con, stmt);
+        }
+    }
 
     public void updateProd(Produto prt) throws SQLException {
         try {
@@ -242,7 +284,7 @@ try {
         }
     }
 
-    public void updateCateg(Produto prt, Connection conn) throws SQLException{
+    public void updateCateg(Produto prt, Connection conn) throws SQLException {
         try {
 
             setSql("UPDATE PRODUTO_CATEGORIA SET ID_CATEGORIA=(SELECT ID FROM CATEGORIA WHERE (NOME=?)) WHERE (ID_PRODUTO=?) ");

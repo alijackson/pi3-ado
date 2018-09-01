@@ -13,23 +13,24 @@ import java.util.Calendar;
  * @author jacks
  */
 public class Produto {
+
     private String nome, descricao;
     private int quant;
     private float pCompra, pVenda;
     private Timestamp time;
     private int id;
-    
+
     // Informações da categoria do produto.
     private String categoria;
-    
+
     // Construtor do objeto.
-    public Produto(){
+    public Produto() {
         Calendar cal = Calendar.getInstance();
-        
+
         setTime(new Timestamp(cal.get(Calendar.HOUR_OF_DAY)));
-        
+
     }
-    
+
     // Inicio get e set
     public String getNome() {
         return nome;
@@ -96,7 +97,6 @@ public class Produto {
     }
 
     // Fim get e set
-
     public String getData() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

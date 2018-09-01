@@ -20,9 +20,9 @@ import java.util.logging.Logger;
 public class Conexao {
 
     private static final String DRIVER = "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://produtobd.mysql.dbaas.com.br:3306/produtobd";
-    private static final String USER = "produtobd";
-    private static final String PASS = "Grup0F1v3";
+    private static final String URL = "jdbc:mysql://localhost:3306/produtobd";
+    private static final String USER = "root";
+    private static final String PASS = "";
 
     public static Connection getConnection() {
 
@@ -69,5 +69,4 @@ public class Conexao {
         }
     }
 
-    
 }

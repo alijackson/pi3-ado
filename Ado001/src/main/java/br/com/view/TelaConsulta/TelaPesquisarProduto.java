@@ -23,7 +23,7 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
      * Creates new form TelaPesquisarProduto
      */
     TelaEditarProduto editar = new TelaEditarProduto();
-    
+
     public TelaPesquisarProduto() {
 
         initComponents();
@@ -38,7 +38,6 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
         modelo.setRowCount(0);
 
         for (Produto p : dao.read()) {
-
             modelo.addRow(new Object[]{
                 p.getId(),
                 p.getNome(),
@@ -210,12 +209,12 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtPesqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesqActionPerformed
-        // TODO add your handling code here:
+        readJtable();
     }//GEN-LAST:event_txtPesqActionPerformed
 
     private void tbProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdutoMouseClicked
-        
-        if (evt.getClickCount() != 2){
+
+        if (evt.getClickCount() != 2) {
             return;
         }
         try {
@@ -223,7 +222,7 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
             final int row = tbProduto.getSelectedRow();
 
             if (row >= 0) {
-                
+
                 Produto prt = new Produto();
                 prt.setId(Integer.valueOf(tbProduto.getValueAt(row, 0).toString()));
                 prt.setNome(String.valueOf(tbProduto.getValueAt(row, 1)));
@@ -232,7 +231,7 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
                 prt.setpVenda(Float.valueOf(tbProduto.getValueAt(row, 4).toString()));
                 prt.setQuant(Integer.parseInt(tbProduto.getValueAt(row, 5).toString()));
                 prt.setCategoria(String.valueOf(tbProduto.getValueAt(row, 6)));
-                
+
                 editar.dispose();
                 editar = new TelaEditarProduto();
                 editar.setProduto(prt);
@@ -240,17 +239,37 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
                 editar.setVisible(true);
                 editar.setLocationRelativeTo(null);
                 editar.toFront();
-                
+
                 //buscar novamente os dados no banco
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_tbProdutoMouseClicked
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        if (txtPesq.getText() == null || txtPesq.getText().trim().equalsIgnoreCase("")) {
+            readJtable();
+            return;
+        }
 
+        CrudProduto produtodao = new CrudProduto();
+        Produto p = new Produto();
+        DefaultTableModel modelo = (DefaultTableModel) tbProduto.getModel();
+        modelo.setRowCount(0);
+
+        p = produtodao.readOne(Integer.parseInt(txtPesq.getText()));
+        modelo.addRow(new Object[]{
+            p.getId(),
+            p.getNome(),
+            p.getDescricao(),
+            p.getpCompra(),
+            p.getpVenda(),
+            p.getQuant(),
+            p.getCategoria()
+
+        });
 
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
@@ -274,7 +293,6 @@ public class TelaPesquisarProduto extends javax.swing.JFrame {
             dao.excluir(id1);
             deletarP(row);
         }
-
 
     }//GEN-LAST:event_brnExcluirActionPerformed
 

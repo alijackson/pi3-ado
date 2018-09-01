@@ -292,7 +292,7 @@ public class TelaEditarProduto extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(null, "Produto alterado com sucesso!",
                     "Cadastrado", JOptionPane.INFORMATION_MESSAGE);
-            
+
             this.dispose();
 
         } catch (Exception e) {
@@ -300,7 +300,6 @@ public class TelaEditarProduto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Erro ao alterar o produto\n" + e,
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
-
 
     }//GEN-LAST:event_bAddActionPerformed
 

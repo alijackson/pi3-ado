@@ -10,6 +10,7 @@ import br.com.view.TelaPrincipal.TelaPrincipal;
 import br.com.dao.produto.ListCategoria;
 import br.com.produto.Produto;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author Kujikeo
@@ -25,7 +26,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
 //        Calendar cal = Calendar.getInstance();
 //
 //        txtData.setText(  String.valueOf(cal.));
-
 
     }
 
@@ -290,7 +290,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
 
-
     }//GEN-LAST:event_bAddActionPerformed
 
     private void limparTela() {
@@ -309,7 +308,6 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
 
         this.dispose();
     }//GEN-LAST:event_bCadastrarActionPerformed
-
 
     /**
      * @param args the command line arguments

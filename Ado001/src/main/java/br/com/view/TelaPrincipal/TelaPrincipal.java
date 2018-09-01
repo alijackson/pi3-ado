@@ -11,7 +11,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JInternalFrame;
 
-
 /**
  *
  * @author Kujikeo
@@ -263,30 +262,29 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jCadastroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCadastroMouseClicked
         TelaCadastroProduto cadastro = new TelaCadastroProduto();
         cadastro.start();
-     
+
     }//GEN-LAST:event_jCadastroMouseClicked
 
     private void jConsultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jConsultaMouseClicked
         TelaPesquisarProduto cons = new TelaPesquisarProduto();
         cons.start();
-  
-        
+
     }//GEN-LAST:event_jConsultaMouseClicked
 
     private void jCadastroMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCadastroMouseEntered
-        jCadastro.setBackground(new Color(220,74,74));
+        jCadastro.setBackground(new Color(220, 74, 74));
     }//GEN-LAST:event_jCadastroMouseEntered
 
     private void jCadastroMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCadastroMouseExited
-        jCadastro.setBackground(new Color(29,29,29));
+        jCadastro.setBackground(new Color(29, 29, 29));
     }//GEN-LAST:event_jCadastroMouseExited
 
     private void jConsultaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jConsultaMouseEntered
-        jConsulta.setBackground(new Color(220,74,74));
+        jConsulta.setBackground(new Color(220, 74, 74));
     }//GEN-LAST:event_jConsultaMouseEntered
 
     private void jConsultaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jConsultaMouseExited
-        jConsulta.setBackground(new Color(29,29,29));
+        jConsulta.setBackground(new Color(29, 29, 29));
     }//GEN-LAST:event_jConsultaMouseExited
 
     //Abre um internal frame centralizado na tela
@@ -339,8 +337,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         TelaPrincipal princ = new TelaPrincipal();
-        
-       
+
         /* Create and display the form */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {

@@ -6,6 +6,24 @@
     <artifactId>Ado001</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+        <developers>
+        <developer>
+            <name>Alijackson Motta</name>
+        </developer>
+        <developer>
+            <name>José Aldair</name>
+            
+        </developer>
+        <developer>
+            <name>Guilherme Caçapava</name>
+        </developer>
+        <developer>
+            <name>Gabriel Faustino</name>
+        </developer>
+        <developer>
+            <name>David Cruz</name>
+        </developer>
+    </developers>
     
     <dependencies>
         <dependency>
